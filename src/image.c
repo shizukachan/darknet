@@ -656,7 +656,8 @@ void save_image_jpg(image p, const char *name)
             }
         }
     }
-    cvSaveImage(buff, disp,0);
+    int qual[3] = {CV_IMWRITE_JPEG_QUALITY, 90, 0};
+    cvSaveImage(buff, disp,qual);
     cvReleaseImage(&disp);
     free_image(copy);
 }
