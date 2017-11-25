@@ -410,7 +410,7 @@ struct layer{
 void free_layer(layer);
 
 typedef enum {
-    CONSTANT, STEP, EXP, POLY, STEPS, SIG, RANDOM
+    CONSTANT, STEP, EXP, POLY, STEPS, SIG, RANDOM, LRFILE
 } learning_rate_policy;
 
 typedef struct network{
@@ -438,6 +438,8 @@ typedef struct network{
     int num_steps;
     int burn_in;
     int burn_out;
+    FILE *lr_file;
+    float *lr_file_table;
 
     int adam;
     float B1;

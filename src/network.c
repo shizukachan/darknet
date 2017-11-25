@@ -111,6 +111,37 @@ float get_current_rate(network *net)
             return net->learning_rate * pow(rand_uniform(0,1), net->power);
         case SIG:
             return net->learning_rate * (1./(1.+exp(net->gamma*(batch_num - net->step))));
+        case LRFILE:
+            if (net->lr_file == 0)
+            {
+              fprintf(stderr,"Loading lr_file.txt learning rate schedule!\n",net->lr_file);
+              net->lr_file = fopen("lr_file.txt","rb");
+              if (!net->lr_file)
+              {
+                fprintf(stderr, "can't open lr_file.txt");
+                net->lr_file=1;
+                goto lr_file_bad;
+              }
+              net->lr_file_table = (float*)calloc(net->max_batches,sizeof(float));
+              unsigned int index=0;
+              unsigned int nr_read;
+              while (!feof(net->lr_file))
+              {
+                nr_read=fscanf(net->lr_file,"%f",&net->lr_file_table[index]);
+                if (nr_read)
+                  index++;
+              }
+              fclose(net->lr_file);
+              if (index!=net->max_batches)
+              {
+                fprintf(stderr, "number of floats in lr_file.txt (%u) does not match max_batches (%u)",index,net->max_batches);
+                net->lr_file = 1;
+              }
+            }
+            lr_file_bad:
+            if (net->lr_file == 1)
+              return net->learning_rate;
+            return net->lr_file_table[batch_num];
         default:
             fprintf(stderr, "Policy is weird!\n");
             return net->learning_rate;
