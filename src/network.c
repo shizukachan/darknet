@@ -132,9 +132,9 @@ float get_current_rate(network *net)
                   index++;
               }
               fclose(net->lr_file);
-              if (index!=net->max_batches)
+              if (index!=net->max_batches+1)
               {
-                fprintf(stderr, "number of floats in lr_file.txt (%u) does not match max_batches (%u)",index,net->max_batches);
+                fprintf(stderr, "number of floats in lr_file.txt (%u) does not match max_batches+1 (%u)",index,net->max_batches+1);
                 net->lr_file = 1;
               }
             }
