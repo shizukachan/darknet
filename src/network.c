@@ -114,12 +114,12 @@ float get_current_rate(network *net)
         case LRFILE:
             if (net->lr_file == 0)
             {
-              fprintf(stderr,"Loading lr_file.txt learning rate schedule!\n",net->lr_file);
+              fprintf(stderr,"Loading lr_file.txt learning rate schedule!\n");
               net->lr_file = fopen("lr_file.txt","rb");
               if (!net->lr_file)
               {
                 fprintf(stderr, "can't open lr_file.txt");
-                net->lr_file=1;
+                net->lr_file = 1;
                 goto lr_file_bad;
               }
               net->lr_file_table = (float*)calloc(net->max_batches,sizeof(float));
@@ -134,7 +134,7 @@ float get_current_rate(network *net)
               fclose(net->lr_file);
               if (index!=net->max_batches+1)
               {
-                fprintf(stderr, "number of floats in lr_file.txt (%u) does not match max_batches+1 (%u)",index,net->max_batches+1);
+                fprintf(stderr, "Disabling lr_file. Number of floats in lr_file.txt (%u) does not match max_batches+1 (%u)\n",index,net->max_batches+1);
                 net->lr_file = 1;
               }
             }
